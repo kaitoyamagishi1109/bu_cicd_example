@@ -17,4 +17,4 @@ jobs:
         path: "./requirements.txt"
     - name: Test with pytest
       run: |
-        pytest -vv --cov-fail-under=90 -W ignore::DeprecationWarning
+        python3 -m pytest -rsA tests/ -vv --cov-fail-under=90 -W ignore::DeprecationWarning
