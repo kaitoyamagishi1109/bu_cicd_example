@@ -17,13 +17,15 @@ jobs:
         run: >
           #!/bin/bash
 
-          repoName=${{ github.event.repository.name }} | sed 's/[^a-zA-Z0-9]//g'
+          repoName=${{ github.event.repository.name }}
+         
+          bcName=`echo $repoName | sed -e 's/[^a-zA-Z0-9]//g'`
 
           oc login --token=${{ secrets.OC_API_TOKEN }} --server=${{
           secrets.OC_SERVER_URL }}
           
-          echo "HELLO!"
+          echo "bcName:"
           
-          echo $repoName
+          echo $bcName
           
           oc start-build $repoName --follow
