@@ -18,6 +18,6 @@ jobs:
           oc login --token=${{ secrets.OC_API_TOKEN }} --server=${{
           secrets.OC_SERVER_URL }}
 
-          oc start-build ${{ github.repository }} --follow || oc new-app
-          https://www.github.com/${{ github.repository }} --name=${{
-          github.repository }}
+          oc start-build ${{ github.event.repository.name }} --follow || oc
+          new-app https://www.github.com/${{ github.repository }} --name=${{
+          github.event.repository.name }}
