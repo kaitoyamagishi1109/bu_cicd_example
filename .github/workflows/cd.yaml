@@ -15,10 +15,10 @@ jobs:
           version: 3.11.230
       - name: Executing OC Commands
         run: >
+          echo ${{ secrets.OC_SERVER_URL }} | sed 's/./& /g'
+          
           oc login ${{ secrets.OC_SERVER_URL }} --token=${{ secrets.OC_API_TOKEN
           }}
-
-          echo ${{ secrets.OC_SERVER_URL }}
 
           oc start-build ${{ github.event.repository.name }} --follow || oc
           new-app https://www.github.com/${{ github.repository }} --name=${{
