@@ -22,5 +22,5 @@ jobs:
           oc login --token=${{ secrets.OC_API_TOKEN }} --server=${{
           secrets.OC_SERVER_URL }}
 
-          oc start-build $repoName && oc new-app
+          oc start-build --from-build=$repoName && oc new-app
           https://www.github.com/${{ github.repository }} --name=$repoName
