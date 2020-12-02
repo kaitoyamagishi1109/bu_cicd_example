@@ -22,5 +22,8 @@ jobs:
           oc login --token=${{ secrets.OC_API_TOKEN }} --server=${{
           secrets.OC_SERVER_URL }}
           
+          echo "HELLO!"
+          
           echo $repoName
-          oc start-build $repoName
+          
+          oc start-build $repoName --follow
