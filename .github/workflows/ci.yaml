@@ -46,7 +46,8 @@ jobs:
           path: ./requirements.txt
       - name: Testing with PyTest
         run: >
-          python3 -m pytest -rsA tests/ -vv --cov-fail-under=90 -W ignore::DeprecationWarning
+          python3 -m pytest -rsA tests/ -vv --cov-fail-under=90 -W
+          ignore::DeprecationWarning
   deployForIT:
     needs: pyTest
     name: Deploying Branch to OpenShift for Testing
@@ -59,11 +60,15 @@ jobs:
           version: 3.11.230
       - name: Executing OC Commands
         run: >
+          #!/bin/bash
+
+          branchName=`echo ${{ github.head_ref }} | sed -e 's/[^a-z0-9]//g'`
+
           oc login --token=${{ secrets.OC_API_TOKEN }} --server=${{
           secrets.OC_SERVER_URL }}
 
           oc new-app https://www.github.com/${{ github.repository }}#${{
-          github.head_ref }} --name=${{ github.head_ref }}
+          github.head_ref }} --name=$branchName
   cleaningOC:
     needs: deployForIT
     name: Cleaning OpenShift Env
@@ -79,4 +84,4 @@ jobs:
           oc login --token=${{ secrets.OC_API_TOKEN }} --server=${{
           secrets.OC_SERVER_URL }}
 
-          oc delete all --selector app=${{ github.head_ref }}
+          oc delete all --selector app=$branchName
