@@ -1,4 +1,4 @@
-from wsgi import application
+from ..wsgi import application
 from common.app_config import AppConfig
 from common.config import config
 from common.utils import *
