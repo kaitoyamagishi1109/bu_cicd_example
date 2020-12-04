@@ -68,8 +68,8 @@ jobs:
           oc login --token=${{ secrets.OC_API_TOKEN }} --server=${{
           secrets.OC_SERVER_URL }}
 
-          oc new-app https://www.github.com/${{ github.repository }}#${{
-          github.head_ref }} --name=$branchName
+          oc start-build $branchName --follow || oc new-app
+          https://www.github.com/${{ github.repository }}#${{github.head_ref }} --name=$branchName
   cleaningOC:
     needs: deployForIT
     name: Cleaning OpenShift Env
