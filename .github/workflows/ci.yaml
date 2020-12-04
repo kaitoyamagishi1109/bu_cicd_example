@@ -62,14 +62,15 @@ jobs:
         run: >
           #!/bin/bash
 
-          branchName=`(echo ${{ github.head_ref }} | tr '[:upper:]' '[:lower:]') | sed -e
-          's/[^a-z0-9]//g'`
+          branchName=`(echo ${{ github.head_ref }} | tr '[:upper:]' '[:lower:]')
+          | sed -e 's/[^a-z0-9]//g'`
 
           oc login --token=${{ secrets.OC_API_TOKEN }} --server=${{
           secrets.OC_SERVER_URL }}
 
           oc start-build $branchName --follow || oc new-app
-          https://www.github.com/${{ github.repository }}#${{github.head_ref }} --name=$branchName
+          https://www.github.com/${{ github.repository }}#${{ github.head_ref }}
+          --name=$branchName
   cleaningOC:
     needs: deployForIT
     name: Cleaning OpenShift Env
@@ -84,9 +85,9 @@ jobs:
         run: >
           #!/bin/bash
 
-          branchName=`(echo ${{ github.head_ref }} | tr '[:upper:]' '[:lower:]') | sed -e
-          's/[^a-z0-9]//g'`
-
+          branchName=`(echo ${{ github.head_ref }} | tr '[:upper:]' '[:lower:]')
+          | sed -e 's/[^a-z0-9]//g'`
+          
           oc login --token=${{ secrets.OC_API_TOKEN }} --server=${{
           secrets.OC_SERVER_URL }}
 
