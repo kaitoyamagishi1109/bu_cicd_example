@@ -71,8 +71,16 @@ jobs:
           oc start-build $branchName --follow || oc new-app
           https://www.github.com/${{ github.repository }}#${{ github.head_ref }}
           --name=$branchName
-  cleaningOC:
+  wait:
     needs: deployForIT
+    name: Wait One Hour before Deleting Test Deployment
+    runs-on: ubuntu-latest
+    steps:
+      - uses: jakejarvis/wait-action@master
+        with:
+          time: 30m
+  cleaningOC:
+    needs: wait
     name: Cleaning OpenShift Env
     runs-on: ubuntu-latest
     steps:
@@ -87,7 +95,7 @@ jobs:
 
           branchName=`(echo ${{ github.head_ref }} | tr '[:upper:]' '[:lower:]')
           | sed -e 's/[^a-z0-9]//g'`
-          
+
           oc login --token=${{ secrets.OC_API_TOKEN }} --server=${{
           secrets.OC_SERVER_URL }}
 
